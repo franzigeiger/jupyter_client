@@ -25,15 +25,13 @@ class KernelApp(JupyterApp):
     flags = {'debug': base_flags['debug']}
 
     kernel_name = Unicode(NATIVE_KERNEL_NAME,
-        help = 'The name of a kernel type to start'
-    ).tag(config=True)
+                          help = 'The name of a kernel type to start'
+                          ).tag(config=True)
 
     def initialize(self, argv=None):
         super(KernelApp, self).initialize(argv)
         self.km = KernelManager(kernel_name=self.kernel_name,
                                 config=self.config)
-        cf_basename = 'kernel-%s.json' % uuid.uuid4()
-        self.km.connection_file = os.path.join(self.runtime_dir, cf_basename)
         self.loop = IOLoop.current()
         self.loop.add_callback(self._record_started)
 
